@@ -1,0 +1,8 @@
+---
+- name: set motd
+  #import_tasks: motd.yml
+  include: motd.yml
+
+- name: set root bashrc
+  #import_tasks: bashrc.yml
+  include: bashrc.yml

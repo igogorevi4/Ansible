@@ -1,0 +1,10 @@
+---
+- name: Setup bashrc
+  template:
+    src: bashrc.j2
+    dest: "/root/.bashrc"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  become: yes

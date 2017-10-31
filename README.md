@@ -1,2 +1,8 @@
 # ansible
-ansible role to automate addition hosts to Zabbix monitoring
+
+Here there are ansible roles to automate dayly tasks:
+
+    * zabbix monitoring tasks
+    * fail2ban installation
+    * primary server's configuring
+    * .bashrc tuning

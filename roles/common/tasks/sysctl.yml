@@ -1,0 +1,28 @@
+---
+- name: Copy some nginx configs
+  copy:
+    src: 'sysctl.conf'
+    dest: '/etc/sysctl.conf'
+    owner: "root"
+    group: "root"
+    mode: 0644
+    backup: yes
+  become: yes
+
+- command: getconf PAGE_SIZE
+  register: page_size
+
+- command: getconf _PHYS_PAGES
+  register: phys_pages
+
+- command: "expr {{ phys_pages.stdout }} / 2"
+  register: shmall
+
+- command: expr "{{ shmall.stdout }}" \* "{{ page_size.stdout }}"
+  register: shmmax
+
+- sysctl: name=kernel.shmmax value={{ shmmax.stdout }}
+  become: yes
+
+- sysctl: name=kernel.shmall value={{ shmall.stdout }}
+  become: yes

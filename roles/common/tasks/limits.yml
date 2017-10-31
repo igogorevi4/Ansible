@@ -1,0 +1,12 @@
+---
+- name: Set security limits for openfiles
+  copy:
+    src: looch.conf
+    dest: /etc/security/limits.d/sysctl.conf
+  become: yes
+
+- name: Set pam_limits.so to /etc/pam.d/common-session
+  lineinfile:
+    dest: /etc/pam.d/common-session
+    line: 'session required pam_limits.so'
+  become: yes

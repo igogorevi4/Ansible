@@ -1,0 +1,31 @@
+---
+- name: Install NTP
+  apt: name=ntp
+  become: yes
+
+- name: Set timezone to Europe/Moscow
+  timezone:
+    name: UTC
+  become: yes
+
+- name: Set NTP server
+  lineinfile: dest=/etc/ntp.conf insertbefore='^pool 0' line='server {{ ntp_server }} prefer' owner=root group=root mode=0644
+  become: yes
+
+- name: Set deny all machines from accessing the NTP server on IPv4
+  lineinfile: dest=/etc/ntp.conf regexp='^restrict -4 default(.*)$' line='restrict -4 default ignore' backrefs=yes owner=root group=root mode=0644
+  become: yes
+
+- name: Set deny all machines from accessing the NTP server on IPv6
+  lineinfile: dest=/etc/ntp.conf regexp='^restrict -6 default(.*)$' line='restrict -6 default ignore' backrefs=yes owner=root group=root mode=0644
+  become: yes
+
+- name: Restart NTP service
+  systemd: state=restarted name=ntp daemon_reload=yes enabled=yes
+  become: yes
+  when: ansible_distribution_release == "xenial"
+
+- name: Restart NTP service
+  service: state=restarted name=ntp enabled=yes
+  become: yes
+  when: ansible_distribution_release == "trusty"

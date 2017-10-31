@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: yes
+  vars:
+    user: ubuntu
+    timezone: Europe/Moscow
+    locales: en_US.UTF-8
+    ntp_server: time.google.com
+
+  roles:
+    - common
+    - bashrc

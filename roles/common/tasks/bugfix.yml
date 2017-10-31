@@ -1,0 +1,14 @@
+---
+- name: Drop Caches
+  shell: echo 3 > /proc/sys/vm/drop_caches
+  become: yes
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+
+- name: Bugfix https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1518457
+  replace: dest=/lib/udev/rules.d/40-vm-hotadd.rules regexp='^ATTR*' replace='### Delete' backup=yes
+  become: yes
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
+
+- name: Bugfix cloud-init disable locale
+  replace: dest=/etc/cloud/cloud.cfg regexp='^-.locale$' replace='### - locale'
+  become: yes

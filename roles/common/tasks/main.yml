@@ -1,0 +1,8 @@
+---
+- include: install.yml
+- include: time.yml
+- include: locales.yml
+- include: bugfix.yml
+- include: sshd_config.yml
+- include: sysctl.yml
+- include: limits.yml

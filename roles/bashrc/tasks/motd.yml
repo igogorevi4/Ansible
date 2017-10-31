@@ -1,0 +1,30 @@
+---
+- name: install update-motd
+  apt:
+    name: update-motd
+    state: present
+  become: yes
+
+- name: cleanup /etc/update-motd.d
+  file:
+    path: /etc/update-motd.d
+    state: absent
+  run_once: yes
+  become: yes
+
+- name: create /etc/update-motd.d
+  file:
+    path: /etc/update-motd.d
+    state: directory
+    mode: 0755
+  run_once: yes
+  become: yes
+
+- name: set motd script
+  template:
+    src: 10-motd.j2
+    dest: /etc/update-motd.d/10-motd
+    owner: root
+    group: root
+    mode: 0744
+  become: yes

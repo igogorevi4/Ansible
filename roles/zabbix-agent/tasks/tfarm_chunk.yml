@@ -1,0 +1,11 @@
+---
+- name: Copying configuration files...
+  copy: 
+    src: tfarm.chunk/chunk.conf 
+    dest: /etc/zabbix/zabbix_agentd.d/chunk.conf 
+
+- name: Adding Zabbix user to sudo group
+  user:
+    name: zabbix
+    groups: sudo
+    state: present

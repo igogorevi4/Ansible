@@ -1,0 +1,37 @@
+---
+- name: Update repositories cache and install "sysstat" package
+  apt:
+    name: sysstat
+    update_cache: yes
+
+- name: Create directory if not exists
+  file:
+    path: /etc/zabbix/scripts/
+    state: directory
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Copying zabbix-config
+  copy:
+    src: iostat/iostat.conf
+    dest: /etc/zabbix/zabbix_agentd.d/iostat.conf
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+ 
+- name: Copying parse script
+  copy: 
+    src: iostat/iostat-parse.sh
+    dest: /etc/zabbix/scripts/iostat-parse.sh
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Copying collect script
+  copy:
+    src: iostat/iostat-collect.sh
+    dest: /etc/zabbix/scripts/iostat-collect.sh
+    mode: 0755
+    owner: zabbix
+    group: zabbix

@@ -1,0 +1,2 @@
+env: stage
+PS1_color: "{{ '196' if env == 'production'  else '11' if env == 'stage' else '76' }}"

@@ -1,0 +1,20 @@
+---
+- name: Install Ubuntu 14.04
+  apt: deb={{ url_repo_ubuntu_trusty }}
+  become: yes
+  when: ansible_distribution_release == "trusty" and zabbix_agent_check_deb.rc == 1
+
+- name: Install Ubuntu 16.04
+  apt: deb={{ url_repo_ubuntu_xenial }}
+  become: yes
+  when: ansible_distribution_release == "xenial" and zabbix_agent_check_deb.rc == 1
+
+- name: Install Debian Wheezy
+  apt: deb={{ url_repo_debian_wheezy }}
+  become: yes
+  when: ansible_distribution_release == "wheezy" and zabbix_agent_check_deb.rc == 1
+
+- name: Install Debian Jessie
+  apt: deb={{ url_repo_debian_jessie }}
+  become: yes
+  when: ansible_distribution_release == "jessie" and zabbix_agent_check_deb.rc == 1

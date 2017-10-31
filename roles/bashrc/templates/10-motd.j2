@@ -1,0 +1,13 @@
+#!/bin/sh
+echo "============================= HOST INFORMATION ================================="
+echo "OS: "`lsb_release -sd`
+echo "HOST: "`hostname -f`
+{% if env != 'production' -%}
+echo "IP:" `curl -s --connect-timeout 3 https://ipinfo.io/ip`
+{% endif %}
+echo "LAN IP: "`hostname -I | cut -d' ' -f1`
+echo "INFO:"`uptime`
+echo "============================== USERS ONLINE ===================================="
+echo "USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT"
+w -h
+echo "================================================================================"

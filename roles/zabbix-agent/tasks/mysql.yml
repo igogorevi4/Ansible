@@ -1,0 +1,19 @@
+--- 
+- name: Creating directory for outdated configs
+  file: path=/etc/zabbix/zabbix_agentd.d/obsolete/ state=directory mode=0755
+      
+- name: Backing up old mysql.conf file if exists
+  shell: if [ -f /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf  ]; then sudo mv /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf /etc/zabbix/zabbix_agentd.d/obsolete/userparameter_mysql.conf; fi
+
+- name: Copying MySQL files
+  copy:
+    src: 'mysql/{{ item.file }}'
+    dest: '{{ item.dest }}'
+    mode: 0700
+    owner: zabbix
+    group: zabbix
+    force: yes
+  with_items:
+    - { file: ".my.cnf",  dest: "/etc/zabbix/.my.cnf" }
+    - { file: "mysql.conf",  dest: "/etc/zabbix/zabbix_agentd.d/mysql.conf" }
+  become: yes

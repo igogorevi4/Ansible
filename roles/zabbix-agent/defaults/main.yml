@@ -1,0 +1,8 @@
+---
+url_repo_ubuntu_trusty: http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+trusty_all.deb
+url_repo_ubuntu_xenial: http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+xenial_all.deb
+url_repo_debian_wheezy: http://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix-release/zabbix-release_3.0-1+wheezy_all.deb
+url_repo_debian_jessie: http://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix-release/zabbix-release_3.0-1+jessie_all.deb
+zabbix_server: "127.0.0.1"
+zabbix_hostname: "{{ ansible_hostname }}"
+zabbix_host_group: "Discovered hosts"

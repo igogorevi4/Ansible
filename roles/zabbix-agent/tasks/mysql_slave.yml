@@ -1,0 +1,3 @@
+---
+- name: Copying configuration files...
+  copy: src=mysql/mysql-slave.conf dest=/etc/zabbix/zabbix_agentd.d/mysql-slave.conf

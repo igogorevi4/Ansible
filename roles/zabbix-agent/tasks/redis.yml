@@ -1,0 +1,67 @@
+---
+- name: Downloading redis python package
+  become: yes
+  get_url:
+    url: https://pypi.python.org/packages/68/44/5efe9e98ad83ef5b742ce62a15bea609ed5a0d1caf35b79257ddb324031a/redis-2.10.5.tar.gz#md5=3b26c2b9703b4b56b30a1ad508e31083
+    dest: /tmp/python.redis
+    mode: 0755
+
+- name: Create temporary dir
+  file:
+    path: /tmp/python.redis.unpacked
+    state: directory
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Unarchive package
+  become: yes
+  unarchive:
+    src: /tmp/python.redis
+    dest: /tmp/python.redis.unpacked
+    remote_src: True
+
+- name: Installing redis python package
+  become: yes
+  command: /usr/bin/python setup.py install
+  args:
+    chdir: /tmp/python.redis.unpacked/redis-2.10.5
+
+- name: Deleting temporary file
+  become: yes
+  file:
+    state: absent
+    path: /tmp/python.redis.unpacked/redis-2.10.5
+
+- name: Deleting temporary file
+  become: yes
+  file:
+    state: absent
+    path: /tmp/python.redis
+
+- name: Create directory if not exist
+  become: yes
+  file:
+     path: /etc/zabbix/scripts/
+     state: directory
+     mode: 0755
+     owner: zabbix
+     group: zabbix
+
+- name: Copying zabbix-config
+  become: yes
+  copy:
+    src: redis/redis.conf
+    dest: /etc/zabbix/zabbix_agentd.d/redis.conf
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Copying python script
+  become: yes
+  copy:
+    src: redis/redis-stats.py
+    dest: /etc/zabbix/scripts/redis-stats.py
+    mode: 0755
+    owner: zabbix
+    group: zabbix

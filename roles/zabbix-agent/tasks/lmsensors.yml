@@ -1,0 +1,36 @@
+---
+- name: Installing package
+  package:
+    name: lm-sensors
+    state: present
+
+- name: Initializing sensors
+  command: sensors-detect --auto
+  become: yes
+
+- name: Create directory if not exists
+  become: yes
+  file:
+    path: /etc/zabbix/scripts/
+    state: directory
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Copying shell script
+  become: yes
+  copy:
+    src: lmsensors/lmsensors.sh
+    dest: /etc/zabbix/scripts/lmsensors.sh
+    mode: 0700
+    owner: zabbix
+    group: zabbix
+
+- name: Copying zabbix-agent config
+  become: yes
+  copy:
+    src: lmsensors/lmsensors.conf
+    dest: /etc/zabbix/zabbix_agentd.d/lmsensors.conf
+    mode: 0755
+    owner: zabbix
+    group: zabbix

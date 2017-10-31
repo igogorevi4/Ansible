@@ -1,0 +1,20 @@
+---
+- name: Locales gen
+  locale_gen: name={{ locales }} state=present
+  ignore_errors: True
+  become: yes
+
+- name: Locales update
+  command: /usr/sbin/update-locale LANG={{ locales }} LC_ALL={{ locales }}
+  ignore_errors: True
+  become: yes
+
+- name: Locales Set default
+  template: src=locales.j2 dest=/etc/default/locale
+  ignore_errors: True
+  become: yes
+
+- name: Locales Set default
+  template: src=locales.j2 dest=/etc/environment
+  ignore_errors: True
+  become: yes

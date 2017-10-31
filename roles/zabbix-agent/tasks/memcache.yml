@@ -1,0 +1,24 @@
+---
+- name: Create directory if not exists
+  file:
+    path: /etc/zabbix/scripts/
+    state: directory
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Copying zabbix-config
+  copy: 
+    src: memcached/memcache.conf 
+    dest: /etc/zabbix/zabbix_agentd.d/memcache.conf
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+ 
+- name: Copying script
+  copy: 
+    src: memcached/memcache-stats.sh 
+    dest: /etc/zabbix/scripts/memcache-stats.sh
+    mode: 0755
+    owner: zabbix
+    group: zabbix

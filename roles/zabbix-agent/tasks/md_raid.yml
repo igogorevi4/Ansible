@@ -1,0 +1,30 @@
+---
+- name: Create directory if not exists
+  file:
+    path: /etc/zabbix/scripts/
+    state: directory
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Adding Zabbix user to sudo group
+  user:
+    name: zabbix
+    groups: sudo
+    state: present
+
+- name: Copying zabbix-config
+  copy:
+    src: raid/raid.conf
+    dest: /etc/zabbix/zabbix_agentd.d/raid.conf
+    mode: 0755
+    owner: zabbix
+    group: zabbix
+
+- name: Copying shell script
+  copy:
+    src: raid/zabbix_mdraid.sh
+    dest: /etc/zabbix/scripts/zabbix_mdraid.sh
+    mode: 0755
+    owner: zabbix
+    group: zabbix

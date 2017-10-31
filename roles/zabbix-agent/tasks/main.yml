@@ -1,0 +1,86 @@
+---
+- name: Check if zabbix-agent is installed
+  command: dpkg-query -W zabbix-agent
+  register: zabbix_agent_check_deb
+  ignore_errors: yes
+
+- include: repo.yml
+
+- include: add_to_zabbix.yml
+
+- include: install.yml
+
+- include: iostat.yml
+  become: yes
+  when: iostat|default(false)|bool == true
+
+- include: md_raid.yml
+  become: yes
+  when: raid|default(false)|bool == true
+
+- include: memcache.yml
+  become: yes
+  when: memcache|default(false)|bool == true
+
+- include: mysql_slave.yml
+  become: yes
+  when: mysql_slave|default(false)|bool == true
+
+- include: mysql.yml
+  become: yes
+  when: mysql|default(false)|bool == true
+
+- include: nginx.yml
+  become: yes
+  when: nginx|default(false)|bool == true
+
+- include: nginx_rtmp.yml
+  become: yes
+  when: nginx_rtmp|default(false)|bool == true
+
+- include: php_fpm.yml
+  become: yes
+  when: php_fpm|default(false)|bool == true
+
+- include: postgresql.yml
+  become: yes
+  when: psql|default(false)|bool == true
+
+- include: etcd.monitoring.yml
+  become: yes
+  when: etcd|default(false)|bool == true
+  
+- include: redis.yml
+  become: yes
+  when: redis|default(false)|bool == true
+
+- include: lmsensors.yml
+  become: yes
+  when: lmsensors|default(false)|bool == true
+
+- include: microservice.yml
+  become: yes
+  when: microservice|default(false)|bool == true
+
+- include: smartmontools.yml
+  become: yes
+  when: smartmontools|default(false)|bool == true
+
+- include: tfarm_chunk.yml
+  become: yes
+  when: tfarm_chunk|default(false)|bool == true
+
+- name: Restart Zabbix Agent Sysvinit
+  service: name=zabbix-agent state=restarted enabled=yes
+  become: yes
+  when: ansible_distribution_release == "trusty" or ansible_distribution_release == "wheezy"
+
+- name: Restart Zabbix Agent Systemd
+  systemd: name=zabbix-agent state=restarted daemon_reload=yes enabled=yes
+  become: yes
+  when: ansible_distribution_release == "xenial" or ansible_distribution_release == "jessie"
+
+- name: Enabled Zabbix Agent Systemd
+  shell: systemctl enable zabbix-agent
+  become: yes
+  when: ansible_distribution_release == "xenial" or ansible_distribution_release == "jessie"

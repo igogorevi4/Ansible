@@ -1,0 +1,20 @@
+--- 
+- name: Disabling password SSH access
+  become: yes
+  replace:
+    dest: /etc/ssh/sshd_config
+    regexp: 'PasswordAuthentication.*'
+    replace: 'PasswordAuthentication no'
+    backup: yes
+
+- name: Disabling root password access
+  become: yes
+  replace:
+    dest: /etc/ssh/sshd_config
+    regexp: 'PermitRootLogin.*'
+    replace: 'PermitRootLogin no'
+    backup: yes
+
+- name: Systecmd sshd restart
+  systemd: name=sshd state=restarted enabled=yes
+  become: yes
